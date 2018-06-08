@@ -68,7 +68,7 @@ settings
 # [database]
 
 ### [database], replace connection
-# connection = mysql+pymysql://keystone:Openstack7526$@117.17.102.26/keystone
+# connection = mysql://keystone:Openstack7526$@117.17.102.26/keystone
 
 ### [token], replace provider
 # provider = fernet
@@ -194,7 +194,7 @@ $ openstack endpoint create --region RegionOne image admin http://117.17.102.26:
 # [database]
 
 ### [database], replace connection
-# connection = mysql+pymysql://glance:Openstack7526$@117.17.102.26/glance
+# connection = mysql://glance:Openstack7526$@117.17.102.26/glance
 
 # [keystone_authtoken]
 
@@ -229,7 +229,7 @@ filesystem_store_datadir = /var/lib/glance/images/
 # [database]
 
 ### [database], replace connection
-# connection = mysql+pymysql://glance:Openstack7526$@117.17.102.26/glance
+# connection = mysql://glance:Openstack7526$@117.17.102.26/glance
 
 # [keystone_authtoken]
 
@@ -323,12 +323,12 @@ $ openstack endpoint create --region RegionOne placement admin http://117.17.102
 # [api_database]
 
 ### [api_database], replace this parameter
-connection = mysql+pymysql://nova:Openstack7526$@117.17.102.26/nova_api
+connection = mysql://nova:Openstack7526$@117.17.102.26/nova_api
 
 # [database]
 
 ### [database], replace this parameter
-connection = mysql+pymysql://nova:Openstack7526$@117.17.102.26/nova
+connection = mysql://nova:Openstack7526$@117.17.102.26/nova
 
 # [DEFAULT]
 
