@@ -409,3 +409,8 @@ password = Openstack7526$
 # su -s /bin/sh -c "nova-manage db sync" nova
 
 # nova-manage cell_v2 list_cells
+
+###################################################
+### nova (on controller) successfully completed ###
+###################################################
+
