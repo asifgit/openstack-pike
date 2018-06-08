@@ -1,0 +1,416 @@
+install ubuntu-16.04.4-desktop-amd64.iso
+
+# apt-get update
+
+settings
+- software and updates
+- download from: main server
+
+settings
+- language support
+- accept the install
+
+# apt-get update
+
+# reboot
+
+# add-apt-repository cloud-archive:pike
+
+# apt-get update
+
+# accept the install (install now) from settings (if any)
+# accept more installations (if any)
+# restart now (if asks to)
+# reboot
+
+# apt-get update
+
+# apt-get install apache2
+
+# ufw app list
+
+# ufw allow 'Apache Full'
+
+# ufw status
+
+# systemctl status apache2 (should be active/running)
+
+# apt-get install curl 
+
+# apt-get install openssh-server
+
+# reboot
+
+# apt-get update
+
+# apt-get install mysql-server
+
+# mysql_secure_installation
+
+# systemctl status mysql.service (should be active/running)
+
+### check by logging in once
+# mysql -u root -p
+### mysql> console should open
+
+# CREATE DATABASE keystone;
+
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'Openstack7526$';
+### exit from mysql (important)
+
+# apt-get install keystone
+# apt-get install apache2 
+# apt-get install libapache2-mod-wsgi
+
+# gedit /etc/keystone/keystone.conf
+
+# [database]
+
+### [database], replace connection
+# connection = mysql+pymysql://keystone:Openstack7526$@localhost/keystone
+
+### [token], replace provider
+# provider = fernet
+### close the file
+
+# su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+# keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+# keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+# keystone-manage bootstrap --bootstrap-password Openstack7526$ \
+  --bootstrap-admin-url http://localhost:35357/v3/ \
+  --bootstrap-internal-url http://localhost:5000/v3/ \
+  --bootstrap-public-url http://localhost:5000/v3/ \
+  --bootstrap-region-id RegionOne
+
+# gedit /etc/apache2/apache2.conf
+
+### replace ServerName (or new entry)
+ServerName controller
+### close the file
+
+# service apache2 restart
+
+# reboot
+
+$ create a folder named scripts with the default user of vm
+$ create a file named as admin-openrc
+$ put this below commands in admin-openrc file
+export OS_USERNAME=admin
+export OS_PASSWORD=Openstack7526$
+export OS_PROJECT_NAME=admin
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_AUTH_URL=http://localhost:35357/v3
+export OS_IDENTITY_API_VERSION=3
+
+$ run the file (like . ~/scripts/admin-openrc)
+### so that the environment variables get set for the current temporary session
+
+# apt-get install python3-openstackclient (or python-openstackclient)
+
+$ openstack project create --domain default \
+  --description "Service Project" service
+
+$ openstack project create --domain default \
+  --description "Demo Project" demo
+
+$ openstack user create --domain default \
+  --password-prompt demo
+
+$ openstack role create user
+
+$ openstack role add --project demo --user demo user
+
+$ unset OS_AUTH_URL OS_PASSWORD
+
+$ openstack --os-auth-url http://localhost:35357/v3 \
+  --os-project-domain-name Default --os-user-domain-name Default \
+  --os-project-name admin --os-username admin token issue
+
+$ openstack --os-auth-url http://localhost:5000/v3 \
+  --os-project-domain-name Default --os-user-domain-name Default \
+  --os-project-name demo --os-username demo token issue
+
+$ . ~/scripts/admin-openrc
+
+$ replace the file-content of ~/scripts/admin-openrc with below
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=Openstack7526$
+export OS_AUTH_URL=http://localhost:35357/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+
+$ create ~/scripts/demo-openrc file
+### copy the below text in ~/scripts/demo-openrc file
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_NAME=demo
+export OS_USERNAME=demo
+export OS_PASSWORD=Openstack7526$
+export OS_AUTH_URL=http://localhost:5000/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+
+$ . ~/scripts/admin-openrc
+
+$ openstack token issue
+
+
+#######################################
+### keystone successfully completed ###
+#######################################
+
+
+# mysql -u root -p
+
+# CREATE DATABASE glance;
+
+# GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY 'Openstack7526$';
+### exit from mysql (important)
+
+# . ~/scripts/admin-openrc
+
+$ openstack user create --domain default --password-prompt glance
+
+$ openstack role add --project service --user glance admin
+
+$ openstack service create --name glance --description "OpenStack Image" image
+
+$ openstack endpoint create --region RegionOne image public http://localhost:9292
+$ openstack endpoint create --region RegionOne image internal http://localhost:9292
+$ openstack endpoint create --region RegionOne image admin http://localhost:9292
+
+# apt install glance
+
+# gedit /etc/glance/glance-api.conf
+
+# [database]
+
+### [database], replace connection
+# connection = mysql+pymysql://glance:Openstack7526$@localhost/glance
+
+# [keystone_authtoken]
+
+### [keystone_authtoken], replace these parameters
+### comment out or remove any other options in the [keystone_authtoken] section
+auth_uri = http://localhost:5000
+auth_url = http://localhost:35357
+memcached_servers = localhost:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = glance
+password = Openstack7526$
+
+# [paste_deploy]
+
+### [paste_deploy], replace flavor
+flavor = keystone
+
+# [glance_store]
+
+### [glance_store], replace these parameters and comment if already
+stores = file,http
+default_store = file
+filesystem_store_datadir = /var/lib/glance/images/
+
+### close the file
+
+# gedit /etc/glance/glance-registry.conf
+
+# [database]
+
+### [database], replace connection
+# connection = mysql+pymysql://glance:Openstack7526$@localhost/glance
+
+# [keystone_authtoken]
+
+### [keystone_authtoken], replace these parameters
+### comment out or remove any other options in the [keystone_authtoken] section
+auth_uri = http://localhost:5000
+auth_url = http://localhost:35357
+memcached_servers = localhost:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = glance
+password = Openstack7526$
+
+# [paste_deploy]
+
+### [paste_deploy], replace flavor
+flavor = keystone
+
+### close the file
+
+# su -s /bin/sh -c "glance-manage db_sync" glance
+
+# service glance-registry restart
+# service glance-api restart
+
+$ . admin-openrc
+
+$ wget http://download.cirros-cloud.net/0.3.5/cirros-0.3.5-x86_64-disk.img
+
+$ openstack image create "cirros" --file cirros-0.3.5-x86_64-disk.img --disk-format qcow2 --container-format bare --public
+
+$ openstack image list
+
+
+#####################################
+### glance successfully completed ###
+#####################################
+
+
+# mysql
+
+# CREATE DATABASE nova_api;
+# CREATE DATABASE nova;
+# CREATE DATABASE nova_cell0;
+
+# GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost' \
+  IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
+
+# GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
+
+# GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'localhost' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
+
+$ . ~/scripts/admin-openrc
+------------------------------------------------
+$ openstack user create --domain default --password-prompt nova
+
+$ openstack role add --project service --user nova admin
+
+$ openstack service create --name nova --description "OpenStack Compute" compute
+
+$ openstack endpoint create --region RegionOne compute public http://localhost:8774/v2.1
+
+$ openstack endpoint create --region RegionOne compute internal http://localhost:8774/v2.1
+
+$ openstack endpoint create --region RegionOne compute admin http://localhost:8774/v2.1
+------------------------------------------------
+$ openstack user create --domain default --password-prompt placement
+
+$ openstack role add --project service --user placement admin
+
+$ openstack service create --name placement --description "Placement API" placement
+
+$ openstack endpoint create --region RegionOne placement public http://localhost:8778
+
+$ openstack endpoint create --region RegionOne placement internal http://localhost:8778
+
+$ openstack endpoint create --region RegionOne placement admin http://localhost:8778
+
+# apt-get install nova-api
+# apt-get install nova-conductor
+# apt-get install nova-consoleauth
+# apt-get install nova-novncproxy
+# apt-get install nova-scheduler
+# apt-get install nova-placement-api
+
+# [api_database]
+
+### [api_database], replace this parameter
+connection = mysql+pymysql://nova:Openstack7526$@localhost/nova_api
+
+# [database]
+
+### [database], replace this parameter
+connection = mysql+pymysql://nova:Openstack7526$@localhost/nova
+
+# [DEFAULT]
+
+### [DEFAULT], replace this parameter
+transport_url = rabbit://openstack:Openstack7526$@localhost
+
+# [api]
+
+### [api], replace these parameters
+auth_strategy = keystone
+
+# [keystone_authtoken]
+
+### [keystone_authtoken], replace these parameters
+auth_uri = http://localhost:5000
+auth_url = http://localhost:35357
+memcached_servers = localhost:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = nova
+password = Openstack7526$
+
+# [DEFAULT]
+
+### [DEFAULT], replace this parameter
+my_ip = 127.0.0.1
+
+# [DEFAULT]
+
+### [DEFAULT], replace these parameters
+use_neutron = True
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+
+# [vnc]
+
+### [vnc], replace these parameters
+enabled = true
+# ...
+vncserver_listen = $my_ip
+vncserver_proxyclient_address = $my_ip
+
+# [glance]
+
+### [glance], replace this parameter
+api_servers = http://localhost:9292
+
+# [oslo_concurrency]
+
+### [oslo_concurrency], replace this parameter
+lock_path = /var/lib/nova/tmp
+
+# [DEFAULT]
+
+### [DEFAULT], comment out this parameter
+# log_dir = /var/log/nova
+
+# [placement]
+
+### [placement], comment out these parameters
+os_region_name = RegionOne
+project_domain_name = Default
+project_name = service
+auth_type = password
+user_domain_name = Default
+auth_url = http://localhost:35357/v3
+username = placement
+password = Openstack7526$
+### close the file
+
+# su -s /bin/sh -c "nova-manage api_db sync" nova
+
+# su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
+
+# su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
+
+# su -s /bin/sh -c "nova-manage db sync" nova
+
+# nova-manage cell_v2 list_cells
+
+###################################################
+### nova (on controller) successfully completed ###
+###################################################
+
