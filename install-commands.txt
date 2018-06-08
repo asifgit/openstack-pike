@@ -37,7 +37,7 @@ settings
 
 # apt-get install curl 
 
-# apt-get install opensssh-server
+# apt-get install openssh-server
 
 # reboot
 
