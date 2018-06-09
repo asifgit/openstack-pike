@@ -52,6 +52,7 @@ settings
 ### check by logging in once
 # mysql -u root -p
 ### mysql> console should open
+### exit from mysql (important)
 
 # CREATE DATABASE keystone;
 
@@ -73,6 +74,39 @@ settings
 ### [token], replace provider
 # provider = fernet
 ### close the file
+
+
+### if you are going to install compute-node on a seperate machine, 
+### 5-steps will have to be perfomred, otherwise not important
+
+### Step-1
+### run this command to check, on which ip/port is mysql accepting requests from
+# netstat -tunap | grep 3306
+### output will look like 127.0.0.1:3306 (if you have not changed the bind-address in mysqld.conf file)
+
+### Step-2
+# gedit /etc/hosts
+### add this line if you want to use the controller word instead of your ip (in order to access using the name)
+# controller 117.17.102.26
+### close the file
+
+### Step-3
+# gedit /etc/mysql/mysql.conf.d/mysqld.conf
+### modify this line to make mysql accessible to only this ip
+# bind-address = 117.17.102.26
+### but if you don't want strictly bind mysql to accept requests from a specific ip, 
+replace bind-addres with this line (i preferred to use bind-address=0.0.0.0)
+# bind-address = 0.0.0.0
+
+### Step-4
+### restart mysql
+# service mysql restart
+
+### Step-5
+### run these two commands in console of mysql>
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$'
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'Openstack7526$'
+### exit from mysql (important)
 
 # su -s /bin/sh -c "keystone-manage db_sync" keystone
 
