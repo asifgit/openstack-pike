@@ -175,7 +175,7 @@ $ openstack token issue
 # GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY 'Openstack7526$';
 ### exit from mysql (important)
 
-# . ~/scripts/admin-openrc
+$ . ~/scripts/admin-openrc
 
 $ openstack user create --domain default --password-prompt glance
 
