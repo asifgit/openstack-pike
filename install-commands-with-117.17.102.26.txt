@@ -75,8 +75,7 @@ settings
 # provider = fernet
 ### close the file
 
-
-### if you are going to install compute-node on a seperate machine, 
+### if you are going to install compute-node or some other node/service on a seperate machine, 
 ### 5-steps will have to be perfomred, otherwise not important
 
 ### Step-1
