@@ -1,0 +1,142 @@
+#####################################
+### keystone installation started ###
+#####################################
+
+### logging into mysql
+# mysql -u root -p
+### run these two commands in console of mysql>
+### mysql> console should open
+
+# CREATE DATABASE keystone;
+
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'Openstack7526$';
+### exit from mysql (important)
+
+# apt-get install keystone
+# apt-get install apache2 
+# apt-get install libapache2-mod-wsgi
+
+# gedit /etc/keystone/keystone.conf
+
+# [database]
+
+### [database], replace connection
+# connection = mysql://keystone:Openstack7526$@117.17.102.26/keystone
+
+### [token], replace provider
+# provider = fernet
+### close the file
+
+### if you are going to install compute-node or some other node/service on a seperate machine, 
+### 5-steps will have to be perfomred, otherwise not important
+
+### Step-1
+### run this command to check, on which ip/port is mysql accepting requests from
+# netstat -tunap | grep 3306
+### output will look like 127.0.0.1:3306 (if you have not changed the bind-address in mysqld.conf file)
+
+### Step-2
+# gedit /etc/hosts
+### add this line if you want to use the controller word instead of your ip (in order to access using the name)
+# controller 117.17.102.26
+### close the file
+
+### Step-3
+# gedit /etc/mysql/mysql.conf.d/mysqld.conf
+### modify this line to make mysql accessible to only this ip
+# bind-address = 117.17.102.26
+### but if you don't want strictly bind mysql to accept requests from a specific ip, 
+replace bind-addres with this line (i preferred to use bind-address=0.0.0.0)
+# bind-address = 0.0.0.0
+
+### Step-4
+### restart mysql
+# service mysql restart
+
+### Step-5
+### run these two commands in console of mysql>
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$'
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'Openstack7526$'
+### exit from mysql (important)
+
+# su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+# keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+# keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+# keystone-manage bootstrap --bootstrap-password Openstack7526$ --bootstrap-admin-url http://117.17.102.26:35357/v3/ --bootstrap-internal-url http://117.17.102.26:5000/v3/ --bootstrap-public-url http://117.17.102.26:5000/v3/ --bootstrap-region-id RegionOne
+
+# gedit /etc/apache2/apache2.conf
+
+### replace ServerName (or new entry)
+ServerName controller
+### close the file
+
+# service apache2 restart
+
+# reboot
+
+$ create a folder named scripts with the default user of vm
+$ create a file named as admin-openrc
+$ put this below commands in admin-openrc file
+export OS_USERNAME=admin
+export OS_PASSWORD=Openstack7526$
+export OS_PROJECT_NAME=admin
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_AUTH_URL=http://117.17.102.26:35357/v3
+export OS_IDENTITY_API_VERSION=3
+
+$ run the file (like . ~/scripts/admin-openrc)
+### so that the environment variables get set for the current temporary session
+
+# apt-get install python3-openstackclient (or python-openstackclient)
+
+$ openstack project create --domain default --description "Service Project" service
+
+$ openstack project create --domain default --description "Demo Project" demo
+
+$ openstack user create --domain default --password-prompt demo
+
+$ openstack role create user
+
+$ openstack role add --project demo --user demo user
+
+$ unset OS_AUTH_URL OS_PASSWORD
+
+$ openstack --os-auth-url http://117.17.102.26:35357/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name admin --os-username admin token issue
+
+$ openstack --os-auth-url http://117.17.102.26:5000/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name demo --os-username demo token issue
+
+$ . ~/scripts/admin-openrc
+
+$ replace the file-content of ~/scripts/admin-openrc with below
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_NAME=admin
+export OS_USERNAME=admin
+export OS_PASSWORD=Openstack7526$
+export OS_AUTH_URL=http://117.17.102.26:35357/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+
+$ create ~/scripts/demo-openrc file
+### copy the below text in ~/scripts/demo-openrc file
+export OS_PROJECT_DOMAIN_NAME=Default
+export OS_USER_DOMAIN_NAME=Default
+export OS_PROJECT_NAME=demo
+export OS_USERNAME=demo
+export OS_PASSWORD=Openstack7526$
+export OS_AUTH_URL=http://117.17.102.26:5000/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
+
+$ . ~/scripts/admin-openrc
+
+$ openstack token issue
+
+
+#######################################
+### keystone successfully completed ###
+#######################################

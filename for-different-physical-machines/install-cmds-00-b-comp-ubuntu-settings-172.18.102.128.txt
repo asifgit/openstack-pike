@@ -1,0 +1,55 @@
+install ubuntu-16.04.4-desktop-amd64.iso
+
+# apt-get update
+
+settings
+- software and updates
+- download from: main server
+
+settings
+- language support
+- accept the install
+
+# apt-get update
+
+# reboot
+
+# add-apt-repository cloud-archive:pike
+
+# apt-get update
+
+# accept the install (install now) from settings (if any)
+# accept more installations (if any)
+# restart now (if asks to)
+# reboot
+
+# apt-get update
+
+# apt-get install apache2
+
+# ufw app list
+
+# ufw allow 'Apache Full'
+
+# ufw status
+
+# systemctl status apache2 (should be active/running)
+
+# apt-get install curl 
+
+# apt-get install openssh-server
+
+# reboot
+
+# apt-get update
+
+# apt-get install mysql-server
+
+# mysql_secure_installation
+
+# systemctl status mysql.service (should be active/running)
+
+### check by logging in once
+# mysql -u root -p
+### mysql> console should open
+### exit from mysql (important)

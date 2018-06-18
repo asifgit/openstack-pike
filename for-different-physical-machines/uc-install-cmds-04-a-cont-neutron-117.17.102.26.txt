@@ -1,0 +1,152 @@
+########################################
+### nova (cont) installation started ###
+########################################
+
+### logging into mysql
+# mysql -u root -p
+### run these two commands in console of mysql>
+### mysql> console should open
+
+# mysql
+
+# CREATE DATABASE nova_api;
+# CREATE DATABASE nova;
+# CREATE DATABASE nova_cell0;
+
+# GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
+
+# GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
+
+# GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
+
+$ . ~/scripts/admin-openrc
+------------------------------------------------
+$ openstack user create --domain default --password-prompt nova
+
+$ openstack role add --project service --user nova admin
+
+$ openstack service create --name nova --description "OpenStack Compute" compute
+
+$ openstack endpoint create --region RegionOne compute public http://117.17.102.26:8774/v2.1
+
+$ openstack endpoint create --region RegionOne compute internal http://117.17.102.26:8774/v2.1
+
+$ openstack endpoint create --region RegionOne compute admin http://117.17.102.26:8774/v2.1
+------------------------------------------------
+$ openstack user create --domain default --password-prompt placement
+
+$ openstack role add --project service --user placement admin
+
+$ openstack service create --name placement --description "Placement API" placement
+
+$ openstack endpoint create --region RegionOne placement public http://117.17.102.26:8778
+
+$ openstack endpoint create --region RegionOne placement internal http://117.17.102.26:8778
+
+$ openstack endpoint create --region RegionOne placement admin http://117.17.102.26:8778
+
+# apt-get install nova-api
+# apt-get install nova-conductor
+# apt-get install nova-consoleauth
+# apt-get install nova-novncproxy
+# apt-get install nova-scheduler
+# apt-get install nova-placement-api
+
+# gedit /etc/nova/nova.conf
+
+# [api_database]
+
+### [api_database], replace this parameter
+connection = mysql://nova:Openstack7526$@117.17.102.26/nova_api
+
+# [database]
+
+### [database], replace this parameter
+connection = mysql://nova:Openstack7526$@117.17.102.26/nova
+
+# [DEFAULT]
+
+### [DEFAULT], replace this parameter
+transport_url = rabbit://openstack:Openstack7526$@117.17.102.26
+
+# [api]
+
+### [api], replace these parameters
+auth_strategy = keystone
+
+# [keystone_authtoken]
+
+### [keystone_authtoken], replace these parameters
+auth_uri = http://117.17.102.26:5000
+auth_url = http://117.17.102.26:35357
+memcached_servers = 117.17.102.26:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = nova
+password = Openstack7526$
+
+# [DEFAULT]
+
+### [DEFAULT], replace this parameter
+my_ip = 117.17.102.26
+
+# [DEFAULT]
+
+### [DEFAULT], replace these parameters
+use_neutron = True
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+
+# [vnc]
+
+### [vnc], replace these parameters
+enabled = true
+# ...
+vncserver_listen = $my_ip
+vncserver_proxyclient_address = $my_ip
+
+# [glance]
+
+### [glance], replace this parameter
+api_servers = http://117.17.102.26:9292
+
+# [oslo_concurrency]
+
+### [oslo_concurrency], replace this parameter
+lock_path = /var/lib/nova/tmp
+
+# [DEFAULT]
+
+### [DEFAULT], comment out this parameter
+# log_dir = /var/log/nova
+
+# [placement]
+
+### [placement], comment out these parameters
+os_region_name = RegionOne
+project_domain_name = Default
+project_name = service
+auth_type = password
+user_domain_name = Default
+auth_url = http://117.17.102.26:35357/v3
+username = placement
+password = Openstack7526$
+### close the file
+
+# su -s /bin/sh -c "nova-manage api_db sync" nova
+
+# su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
+
+# su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
+
+# su -s /bin/sh -c "nova-manage db sync" nova
+
+# nova-manage cell_v2 list_cells
+
+###################################################
+### nova (on controller) successfully completed ###
+###################################################
