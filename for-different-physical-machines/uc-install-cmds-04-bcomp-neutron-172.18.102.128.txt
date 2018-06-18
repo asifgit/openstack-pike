@@ -1,6 +1,6 @@
-########################################
-### nova (cont) installation started ###
-########################################
+###########################################
+### neutron (comp) installation started ###
+###########################################
 
 ### logging into mysql
 # mysql -u root -p
@@ -147,6 +147,6 @@ password = Openstack7526$
 
 # nova-manage cell_v2 list_cells
 
-###################################################
-### nova (on controller) successfully completed ###
-###################################################
+#############################################
+### neutron (comp) successfully completed ###
+#############################################
