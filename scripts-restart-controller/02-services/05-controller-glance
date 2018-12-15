@@ -1,0 +1,5 @@
+#GLANCE
+
+service glance-registry restart
+service glance-api restart
+
