@@ -1,0 +1,4 @@
+#NOVA
+
+service nova-compute restart
+
