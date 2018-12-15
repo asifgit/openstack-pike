@@ -1,0 +1,5 @@
+#HORIZON
+
+service memcached restart
+
+service apache2 reload
