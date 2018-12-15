@@ -1,0 +1,17 @@
+#MYSQL
+
+service mysql restart
+
+#RABBITMQ
+
+service rabbitmq-server restart
+
+#MEMCACHED
+
+service memcached restart
+
+#ETCD
+
+systemctl enable etcd
+systemctl start etcd
+
