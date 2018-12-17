@@ -1,0 +1,7 @@
+#CREATE NETWORK
+
+# create subnet from the GUI (if you have VXLAN enabled, otherwise you have to write the script as same is in the adjacent file for creating private networks)
+
+#CREATE SUBNET
+
+# create subnet from the GUI
