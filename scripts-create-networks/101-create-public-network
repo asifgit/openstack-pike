@@ -1,0 +1,9 @@
+#CREATE NETWORK
+
+openstack network create  --share --external --provider-physical-network provider --provider-network-type flat provider
+
+#CREATE SUBNET
+
+openstack subnet create --network provider --allocation-pool start=117.17.102.101,end=117.17.102.250 --dns-nameserver 192.203.138.11 --gateway 117.17.102.1 --subnet-range 117.17.102.0/24 provider
+
+
