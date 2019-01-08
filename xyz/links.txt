@@ -1,0 +1,5 @@
+<ul>
+  <li>https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7718492&tag=1</li>
+  <li>https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8457913&tag=1</li>
+  <li>https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7140418&tag=1</li>
+</ul>
