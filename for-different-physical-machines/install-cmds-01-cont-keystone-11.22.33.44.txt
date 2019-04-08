@@ -9,7 +9,7 @@
 
 # CREATE DATABASE keystone;
 
-# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'Openstack7526$';
 ### exit from mysql (important)
 
@@ -22,7 +22,7 @@
 # [database]
 
 ### [database], replace connection
-# connection = mysql://keystone:Openstack7526$@117.17.102.26/keystone
+# connection = mysql://keystone:Openstack7526$@11.22.33.44/keystone
 
 ### [token], replace provider
 # provider = fernet
@@ -39,13 +39,13 @@
 ### Step-2
 # gedit /etc/hosts
 ### add this line if you want to use the controller word instead of your ip (in order to access using the name)
-# controller 117.17.102.26
+# controller 11.22.33.44
 ### close the file
 
 ### Step-3
 # gedit /etc/mysql/mysql.conf.d/mysqld.conf
 ### modify this line to make mysql accessible to only this ip
-# bind-address = 117.17.102.26
+# bind-address = 11.22.33.44
 ### but if you don't want strictly bind mysql to accept requests from a specific ip, 
 replace bind-addres with this line (i preferred to use bind-address=0.0.0.0)
 # bind-address = 0.0.0.0
@@ -56,7 +56,7 @@ replace bind-addres with this line (i preferred to use bind-address=0.0.0.0)
 
 ### Step-5
 ### run these two commands in console of mysql>
-# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$'
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$'
 # GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'Openstack7526$'
 ### exit from mysql (important)
 
@@ -65,7 +65,7 @@ replace bind-addres with this line (i preferred to use bind-address=0.0.0.0)
 # keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
 # keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
 
-# keystone-manage bootstrap --bootstrap-password Openstack7526$ --bootstrap-admin-url http://117.17.102.26:35357/v3/ --bootstrap-internal-url http://117.17.102.26:5000/v3/ --bootstrap-public-url http://117.17.102.26:5000/v3/ --bootstrap-region-id RegionOne
+# keystone-manage bootstrap --bootstrap-password Openstack7526$ --bootstrap-admin-url http://11.22.33.44:35357/v3/ --bootstrap-internal-url http://11.22.33.44:5000/v3/ --bootstrap-public-url http://11.22.33.44:5000/v3/ --bootstrap-region-id RegionOne
 
 # gedit /etc/apache2/apache2.conf
 
@@ -85,7 +85,7 @@ export OS_PASSWORD=Openstack7526$
 export OS_PROJECT_NAME=admin
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_DOMAIN_NAME=Default
-export OS_AUTH_URL=http://117.17.102.26:35357/v3
+export OS_AUTH_URL=http://11.22.33.44:35357/v3
 export OS_IDENTITY_API_VERSION=3
 
 $ run the file (like . ~/scripts/admin-openrc)
@@ -105,9 +105,9 @@ $ openstack role add --project demo --user demo user
 
 $ unset OS_AUTH_URL OS_PASSWORD
 
-$ openstack --os-auth-url http://117.17.102.26:35357/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name admin --os-username admin token issue
+$ openstack --os-auth-url http://11.22.33.44:35357/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name admin --os-username admin token issue
 
-$ openstack --os-auth-url http://117.17.102.26:5000/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name demo --os-username demo token issue
+$ openstack --os-auth-url http://11.22.33.44:5000/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name demo --os-username demo token issue
 
 $ . ~/scripts/admin-openrc
 
@@ -117,7 +117,7 @@ export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=admin
 export OS_USERNAME=admin
 export OS_PASSWORD=Openstack7526$
-export OS_AUTH_URL=http://117.17.102.26:35357/v3
+export OS_AUTH_URL=http://11.22.33.44:35357/v3
 export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 
@@ -128,7 +128,7 @@ export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=demo
 export OS_USERNAME=demo
 export OS_PASSWORD=Openstack7526$
-export OS_AUTH_URL=http://117.17.102.26:5000/v3
+export OS_AUTH_URL=http://11.22.33.44:5000/v3
 export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 
