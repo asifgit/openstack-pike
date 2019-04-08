@@ -1,5 +1,9 @@
 # openstack-rocky
 installation steps for openstack-rocky
-for-different-physical-machines
-controller (CONTROLLER-IP)
-compute (COMPUTE-IP)
+
+for-different-physical-machines:
+
+<ul>
+  <li>controller (CONTROLLER-IP)</li>
+  <li>compute (COMPUTE-IP)</li>
+</ul>
