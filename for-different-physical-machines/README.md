@@ -10,4 +10,3 @@ It illustrates the configurations to be done on both the:
   <li>compute (COMPUTE-IP)</li>
 </ul>
 
-THE FOLDER NAMED AS "for-different-physical-machines" PROVIDES THE CONFIGURATION-STEPS TO INSTALL ROCKY RELEASE OF OPENSTACK
