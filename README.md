@@ -1,6 +1,8 @@
 # openstack-pike
 Installation steps for openstack-pike
 
+**NOTE: for-different-physical-machines: the configuration-steps for ROCKY version of Openstack is inside this folder** 
+
 **conventions:** 
 Commands followed by # are to be run as sudo. commands followed by $ are to be run as a normal user
 
