@@ -4,6 +4,6 @@ openstack network create  --share --external --provider-physical-network provide
 
 #CREATE SUBNET
 
-openstack subnet create --network provider --allocation-pool start=117.17.102.101,end=117.17.102.250 --dns-nameserver 192.203.138.11 --gateway 117.17.102.1 --subnet-range 117.17.102.0/24 provider
+openstack subnet create --network provider --allocation-pool start=REPLACE-START-IP,end=REPLACE-END-IP --dns-nameserver REPLACE-DNS-IP --gateway REPLACE-GATEWAY --subnet-range REPLACE-SUBNET-RANGE/CIDR provider
 
 
