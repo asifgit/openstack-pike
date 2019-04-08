@@ -11,7 +11,7 @@
 
 # CREATE DATABASE glance;
 
-# GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY 'Openstack7526$';
 ### exit from mysql (important)
 
@@ -23,9 +23,9 @@ $ openstack role add --project service --user glance admin
 
 $ openstack service create --name glance --description "OpenStack Image" image
 
-$ openstack endpoint create --region RegionOne image public http://117.17.102.26:9292
-$ openstack endpoint create --region RegionOne image internal http://117.17.102.26:9292
-$ openstack endpoint create --region RegionOne image admin http://117.17.102.26:9292
+$ openstack endpoint create --region RegionOne image public http://11.22.33.44:9292
+$ openstack endpoint create --region RegionOne image internal http://11.22.33.44:9292
+$ openstack endpoint create --region RegionOne image admin http://11.22.33.44:9292
 
 # apt install glance
 
@@ -34,15 +34,15 @@ $ openstack endpoint create --region RegionOne image admin http://117.17.102.26:
 # [database]
 
 ### [database], replace connection
-# connection = mysql://glance:Openstack7526$@117.17.102.26/glance
+# connection = mysql://glance:Openstack7526$@11.22.33.44/glance
 
 # [keystone_authtoken]
 
 ### [keystone_authtoken], replace these parameters
 ### comment out or remove any other options in the [keystone_authtoken] section
-auth_uri = http://117.17.102.26:5000
-auth_url = http://117.17.102.26:35357
-memcached_servers = 117.17.102.26:11211
+auth_uri = http://11.22.33.44:5000
+auth_url = http://11.22.33.44:35357
+memcached_servers = 11.22.33.44:11211
 auth_type = password
 project_domain_name = default
 user_domain_name = default
@@ -69,15 +69,15 @@ filesystem_store_datadir = /var/lib/glance/images/
 # [database]
 
 ### [database], replace connection
-# connection = mysql://glance:Openstack7526$@117.17.102.26/glance
+# connection = mysql://glance:Openstack7526$@11.22.33.44/glance
 
 # [keystone_authtoken]
 
 ### [keystone_authtoken], replace these parameters
 ### comment out or remove any other options in the [keystone_authtoken] section
-auth_uri = http://117.17.102.26:5000
-auth_url = http://117.17.102.26:35357
-memcached_servers = 117.17.102.26:11211
+auth_uri = http://11.22.33.44:5000
+auth_url = http://11.22.33.44:35357
+memcached_servers = 11.22.33.44:11211
 auth_type = password
 project_domain_name = default
 user_domain_name = default
