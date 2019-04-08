@@ -13,13 +13,13 @@
 # CREATE DATABASE nova;
 # CREATE DATABASE nova_cell0;
 
-# GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
 
-# GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
 
-# GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
 
 $ . ~/scripts/admin-openrc
@@ -30,11 +30,11 @@ $ openstack role add --project service --user nova admin
 
 $ openstack service create --name nova --description "OpenStack Compute" compute
 
-$ openstack endpoint create --region RegionOne compute public http://117.17.102.26:8774/v2.1
+$ openstack endpoint create --region RegionOne compute public http://11.22.33.44:8774/v2.1
 
-$ openstack endpoint create --region RegionOne compute internal http://117.17.102.26:8774/v2.1
+$ openstack endpoint create --region RegionOne compute internal http://11.22.33.44:8774/v2.1
 
-$ openstack endpoint create --region RegionOne compute admin http://117.17.102.26:8774/v2.1
+$ openstack endpoint create --region RegionOne compute admin http://11.22.33.44:8774/v2.1
 ------------------------------------------------
 $ openstack user create --domain default --password-prompt placement
 
@@ -42,11 +42,11 @@ $ openstack role add --project service --user placement admin
 
 $ openstack service create --name placement --description "Placement API" placement
 
-$ openstack endpoint create --region RegionOne placement public http://117.17.102.26:8778
+$ openstack endpoint create --region RegionOne placement public http://11.22.33.44:8778
 
-$ openstack endpoint create --region RegionOne placement internal http://117.17.102.26:8778
+$ openstack endpoint create --region RegionOne placement internal http://11.22.33.44:8778
 
-$ openstack endpoint create --region RegionOne placement admin http://117.17.102.26:8778
+$ openstack endpoint create --region RegionOne placement admin http://11.22.33.44:8778
 
 # apt-get install nova-api
 # apt-get install nova-conductor
@@ -60,17 +60,17 @@ $ openstack endpoint create --region RegionOne placement admin http://117.17.102
 # [api_database]
 
 ### [api_database], replace this parameter
-connection = mysql://nova:Openstack7526$@117.17.102.26/nova_api
+connection = mysql://nova:Openstack7526$@11.22.33.44/nova_api
 
 # [database]
 
 ### [database], replace this parameter
-connection = mysql://nova:Openstack7526$@117.17.102.26/nova
+connection = mysql://nova:Openstack7526$@11.22.33.44/nova
 
 # [DEFAULT]
 
 ### [DEFAULT], replace this parameter
-transport_url = rabbit://openstack:Openstack7526$@117.17.102.26
+transport_url = rabbit://openstack:Openstack7526$@11.22.33.44
 
 # [api]
 
@@ -80,9 +80,9 @@ auth_strategy = keystone
 # [keystone_authtoken]
 
 ### [keystone_authtoken], replace these parameters
-auth_uri = http://117.17.102.26:5000
-auth_url = http://117.17.102.26:35357
-memcached_servers = 117.17.102.26:11211
+auth_uri = http://11.22.33.44:5000
+auth_url = http://11.22.33.44:35357
+memcached_servers = 11.22.33.44:11211
 auth_type = password
 project_domain_name = default
 user_domain_name = default
@@ -93,7 +93,7 @@ password = Openstack7526$
 # [DEFAULT]
 
 ### [DEFAULT], replace this parameter
-my_ip = 117.17.102.26
+my_ip = 11.22.33.44
 
 # [DEFAULT]
 
@@ -112,7 +112,7 @@ vncserver_proxyclient_address = $my_ip
 # [glance]
 
 ### [glance], replace this parameter
-api_servers = http://117.17.102.26:9292
+api_servers = http://11.22.33.44:9292
 
 # [oslo_concurrency]
 
@@ -132,7 +132,7 @@ project_domain_name = Default
 project_name = service
 auth_type = password
 user_domain_name = Default
-auth_url = http://117.17.102.26:35357/v3
+auth_url = http://11.22.33.44:35357/v3
 username = placement
 password = Openstack7526$
 ### close the file
