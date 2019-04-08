@@ -56,7 +56,7 @@ settings
 
 # CREATE DATABASE keystone;
 
-# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'Openstack7526$';
 ### exit from mysql (important)
 
@@ -69,7 +69,7 @@ settings
 # [database]
 
 ### [database], replace connection
-# connection = mysql://keystone:Openstack7526$@117.17.102.26/keystone
+# connection = mysql://keystone:Openstack7526$@11.22.33.44/keystone
 
 ### [token], replace provider
 # provider = fernet
@@ -86,13 +86,13 @@ settings
 ### Step-2
 # gedit /etc/hosts
 ### add this line if you want to use the controller word instead of your ip (in order to access using the name)
-# controller 117.17.102.26
+# controller 11.22.33.44
 ### close the file
 
 ### Step-3
 # gedit /etc/mysql/mysql.conf.d/mysqld.conf
 ### modify this line to make mysql accessible to only this ip
-# bind-address = 117.17.102.26
+# bind-address = 11.22.33.44
 ### but if you don't want strictly bind mysql to accept requests from a specific ip, 
 replace bind-addres with this line (i preferred to use bind-address=0.0.0.0)
 # bind-address = 0.0.0.0
@@ -103,7 +103,7 @@ replace bind-addres with this line (i preferred to use bind-address=0.0.0.0)
 
 ### Step-5
 ### run these two commands in console of mysql>
-# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$'
+# GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$'
 # GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'Openstack7526$'
 ### exit from mysql (important)
 
@@ -112,7 +112,7 @@ replace bind-addres with this line (i preferred to use bind-address=0.0.0.0)
 # keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
 # keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
 
-# keystone-manage bootstrap --bootstrap-password Openstack7526$ --bootstrap-admin-url http://117.17.102.26:35357/v3/ --bootstrap-internal-url http://117.17.102.26:5000/v3/ --bootstrap-public-url http://117.17.102.26:5000/v3/ --bootstrap-region-id RegionOne
+# keystone-manage bootstrap --bootstrap-password Openstack7526$ --bootstrap-admin-url http://11.22.33.44:35357/v3/ --bootstrap-internal-url http://11.22.33.44:5000/v3/ --bootstrap-public-url http://11.22.33.44:5000/v3/ --bootstrap-region-id RegionOne
 
 # gedit /etc/apache2/apache2.conf
 
@@ -132,7 +132,7 @@ export OS_PASSWORD=Openstack7526$
 export OS_PROJECT_NAME=admin
 export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_DOMAIN_NAME=Default
-export OS_AUTH_URL=http://117.17.102.26:35357/v3
+export OS_AUTH_URL=http://11.22.33.44:35357/v3
 export OS_IDENTITY_API_VERSION=3
 
 $ run the file (like . ~/scripts/admin-openrc)
@@ -152,9 +152,9 @@ $ openstack role add --project demo --user demo user
 
 $ unset OS_AUTH_URL OS_PASSWORD
 
-$ openstack --os-auth-url http://117.17.102.26:35357/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name admin --os-username admin token issue
+$ openstack --os-auth-url http://11.22.33.44:35357/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name admin --os-username admin token issue
 
-$ openstack --os-auth-url http://117.17.102.26:5000/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name demo --os-username demo token issue
+$ openstack --os-auth-url http://11.22.33.44:5000/v3 --os-project-domain-name Default --os-user-domain-name Default --os-project-name demo --os-username demo token issue
 
 $ . ~/scripts/admin-openrc
 
@@ -164,7 +164,7 @@ export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=admin
 export OS_USERNAME=admin
 export OS_PASSWORD=Openstack7526$
-export OS_AUTH_URL=http://117.17.102.26:35357/v3
+export OS_AUTH_URL=http://11.22.33.44:35357/v3
 export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 
@@ -175,7 +175,7 @@ export OS_USER_DOMAIN_NAME=Default
 export OS_PROJECT_NAME=demo
 export OS_USERNAME=demo
 export OS_PASSWORD=Openstack7526$
-export OS_AUTH_URL=http://117.17.102.26:5000/v3
+export OS_AUTH_URL=http://11.22.33.44:5000/v3
 export OS_IDENTITY_API_VERSION=3
 export OS_IMAGE_API_VERSION=2
 
@@ -193,7 +193,7 @@ $ openstack token issue
 
 # CREATE DATABASE glance;
 
-# GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY 'Openstack7526$';
 ### exit from mysql (important)
 
@@ -205,9 +205,9 @@ $ openstack role add --project service --user glance admin
 
 $ openstack service create --name glance --description "OpenStack Image" image
 
-$ openstack endpoint create --region RegionOne image public http://117.17.102.26:9292
-$ openstack endpoint create --region RegionOne image internal http://117.17.102.26:9292
-$ openstack endpoint create --region RegionOne image admin http://117.17.102.26:9292
+$ openstack endpoint create --region RegionOne image public http://11.22.33.44:9292
+$ openstack endpoint create --region RegionOne image internal http://11.22.33.44:9292
+$ openstack endpoint create --region RegionOne image admin http://11.22.33.44:9292
 
 # apt install glance
 
@@ -216,15 +216,15 @@ $ openstack endpoint create --region RegionOne image admin http://117.17.102.26:
 # [database]
 
 ### [database], replace connection
-# connection = mysql://glance:Openstack7526$@117.17.102.26/glance
+# connection = mysql://glance:Openstack7526$@11.22.33.44/glance
 
 # [keystone_authtoken]
 
 ### [keystone_authtoken], replace these parameters
 ### comment out or remove any other options in the [keystone_authtoken] section
-auth_uri = http://117.17.102.26:5000
-auth_url = http://117.17.102.26:35357
-memcached_servers = 117.17.102.26:11211
+auth_uri = http://11.22.33.44:5000
+auth_url = http://11.22.33.44:35357
+memcached_servers = 11.22.33.44:11211
 auth_type = password
 project_domain_name = default
 user_domain_name = default
@@ -251,15 +251,15 @@ filesystem_store_datadir = /var/lib/glance/images/
 # [database]
 
 ### [database], replace connection
-# connection = mysql://glance:Openstack7526$@117.17.102.26/glance
+# connection = mysql://glance:Openstack7526$@11.22.33.44/glance
 
 # [keystone_authtoken]
 
 ### [keystone_authtoken], replace these parameters
 ### comment out or remove any other options in the [keystone_authtoken] section
-auth_uri = http://117.17.102.26:5000
-auth_url = http://117.17.102.26:35357
-memcached_servers = 117.17.102.26:11211
+auth_uri = http://11.22.33.44:5000
+auth_url = http://11.22.33.44:35357
+memcached_servers = 11.22.33.44:11211
 auth_type = password
 project_domain_name = default
 user_domain_name = default
@@ -299,13 +299,13 @@ $ openstack image list
 # CREATE DATABASE nova;
 # CREATE DATABASE nova_cell0;
 
-# GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
 
-# GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
 
-# GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'117.17.102.26' IDENTIFIED BY 'Openstack7526$';
+# GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'11.22.33.44' IDENTIFIED BY 'Openstack7526$';
 # GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'%' IDENTIFIED BY 'Openstack7526$';
 
 $ . ~/scripts/admin-openrc
@@ -316,11 +316,11 @@ $ openstack role add --project service --user nova admin
 
 $ openstack service create --name nova --description "OpenStack Compute" compute
 
-$ openstack endpoint create --region RegionOne compute public http://117.17.102.26:8774/v2.1
+$ openstack endpoint create --region RegionOne compute public http://11.22.33.44:8774/v2.1
 
-$ openstack endpoint create --region RegionOne compute internal http://117.17.102.26:8774/v2.1
+$ openstack endpoint create --region RegionOne compute internal http://11.22.33.44:8774/v2.1
 
-$ openstack endpoint create --region RegionOne compute admin http://117.17.102.26:8774/v2.1
+$ openstack endpoint create --region RegionOne compute admin http://11.22.33.44:8774/v2.1
 ------------------------------------------------
 $ openstack user create --domain default --password-prompt placement
 
@@ -328,11 +328,11 @@ $ openstack role add --project service --user placement admin
 
 $ openstack service create --name placement --description "Placement API" placement
 
-$ openstack endpoint create --region RegionOne placement public http://117.17.102.26:8778
+$ openstack endpoint create --region RegionOne placement public http://11.22.33.44:8778
 
-$ openstack endpoint create --region RegionOne placement internal http://117.17.102.26:8778
+$ openstack endpoint create --region RegionOne placement internal http://11.22.33.44:8778
 
-$ openstack endpoint create --region RegionOne placement admin http://117.17.102.26:8778
+$ openstack endpoint create --region RegionOne placement admin http://11.22.33.44:8778
 
 # apt-get install nova-api
 # apt-get install nova-conductor
@@ -346,17 +346,17 @@ $ openstack endpoint create --region RegionOne placement admin http://117.17.102
 # [api_database]
 
 ### [api_database], replace this parameter
-connection = mysql://nova:Openstack7526$@117.17.102.26/nova_api
+connection = mysql://nova:Openstack7526$@11.22.33.44/nova_api
 
 # [database]
 
 ### [database], replace this parameter
-connection = mysql://nova:Openstack7526$@117.17.102.26/nova
+connection = mysql://nova:Openstack7526$@11.22.33.44/nova
 
 # [DEFAULT]
 
 ### [DEFAULT], replace this parameter
-transport_url = rabbit://openstack:Openstack7526$@117.17.102.26
+transport_url = rabbit://openstack:Openstack7526$@11.22.33.44
 
 # [api]
 
@@ -366,9 +366,9 @@ auth_strategy = keystone
 # [keystone_authtoken]
 
 ### [keystone_authtoken], replace these parameters
-auth_uri = http://117.17.102.26:5000
-auth_url = http://117.17.102.26:35357
-memcached_servers = 117.17.102.26:11211
+auth_uri = http://11.22.33.44:5000
+auth_url = http://11.22.33.44:35357
+memcached_servers = 11.22.33.44:11211
 auth_type = password
 project_domain_name = default
 user_domain_name = default
@@ -379,7 +379,7 @@ password = Openstack7526$
 # [DEFAULT]
 
 ### [DEFAULT], replace this parameter
-my_ip = 117.17.102.26
+my_ip = 11.22.33.44
 
 # [DEFAULT]
 
@@ -398,7 +398,7 @@ vncserver_proxyclient_address = $my_ip
 # [glance]
 
 ### [glance], replace this parameter
-api_servers = http://117.17.102.26:9292
+api_servers = http://11.22.33.44:9292
 
 # [oslo_concurrency]
 
@@ -418,7 +418,7 @@ project_domain_name = Default
 project_name = service
 auth_type = password
 user_domain_name = Default
-auth_url = http://117.17.102.26:35357/v3
+auth_url = http://11.22.33.44:35357/v3
 username = placement
 password = Openstack7526$
 ### close the file
