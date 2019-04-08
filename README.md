@@ -1,8 +1,7 @@
 # openstack-pike
 Installation steps for openstack-pike
 
-**NOTE: THE FOLDER NAMED AS "for-different-physical-machines" PROVIDES 
-THE CONFIGURATION-STEPS TO INSTALL ROCKY RELEASE OF OPENSTACK** 
+**NOTE: THE FOLDER NAMED AS "for-different-physical-machines" PROVIDES <br>THE CONFIGURATION-STEPS TO INSTALL ROCKY RELEASE OF OPENSTACK** 
 
 **conventions:** 
 Commands followed by # are to be run as sudo. commands followed by $ are to be run as a normal user
