@@ -1,5 +1,5 @@
-# openstack-pike
-installation steps for openstack-pike
+# openstack-rocky
+installation steps for openstack-rocky
 for-different-physical-machines
-controller (117.17.102.26)
-compute (172.18.102.128)
+controller (CONTROLLER-IP)
+compute (COMPUTE-IP)
